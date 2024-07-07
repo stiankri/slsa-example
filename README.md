@@ -25,6 +25,8 @@ slsa-verifier verify-artifact binary-linux-amd64 \
 --source-tag v0.0.2
 ```
 
+Rekor entry: [109479596](https://search.sigstore.dev/?logIndex=109479596).
+
 ### Reproduce artifact bits for release `v0.0.2`
 Get the hash of the released version
 ```sh
