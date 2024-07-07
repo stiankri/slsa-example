@@ -3,7 +3,7 @@
 Example using the [SLSA3+ GitHub Workflow for Go](https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/go/README.md) and the [SLSA Verifier](https://github.com/slsa-framework/slsa-verifier).
 
 ### Create a new release
-Pushing a new tag will trigger [a build](https://github.com/stiankri/slsa-example/actions) which creates [a new release](https://github.com/stiankri/slsa-example/release).
+Pushing a new tag will trigger [a build](https://github.com/stiankri/slsa-example/actions) which creates [a new release](https://github.com/stiankri/slsa-example/releases).
 
 ### Verify release `v0.0.2`
 Install `slsa-verifier`
