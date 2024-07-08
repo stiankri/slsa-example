@@ -63,6 +63,8 @@ Upload to Rekor ([example entry](https://search.sigstore.dev/?uuid=24296fb24b8ad
 rekor-cli upload --artifact binary-linux-amd64.intoto.jsonl --signature binary-linux-amd64.intoto.jsonl.sig --pki-format=ssh --public-key=id_ed25519.pub
 ```
 
+*Note: once added both signatures over `binary-linux-amd64.intoto.jsonl` can be [looked up in Rekor using the SHA256 of the file](https://search.sigstore.dev/?hash=a469e1356e1ce9c5c81885bf03692b45c76b5ef1317a7b3751d2f27f810dd120).*
+
 Verify inclusion in log (using the example public key)
 ```sh
 echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBuSE7w1N3OUUpl6N6kpRO+WKkpJb0x1VRCIS3u8NMTj > id_ed25519.pub
