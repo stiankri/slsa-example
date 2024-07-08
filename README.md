@@ -42,3 +42,34 @@ git checkout v0.0.2
 ./reproducible-build.sh
 sha256sum binary-linux-amd64
 ```
+
+### Countersign
+To achieve ["verified reproducible builds"](https://slsa.dev/spec/v1.0/faq), the build should be verified in a separate build process.
+
+One way could be that the maintainers verify the artifact bits and release metadata locally, then countersign the release and add it to Rekor. [SSH is one of several supported formats](https://docs.sigstore.dev/logging/sign-upload/).
+```sh
+cd ..
+ssh-keygen -C test -t ed25519 -f id_ed25519 # preferably a long-lived key used by maintainer/project
+ssh-keygen -Y sign -n file -f id_ed25519 binary-linux-amd64.intoto.jsonl
+```
+
+Install `rekor-cli`
+```sh
+go install -v github.com/sigstore/rekor/cmd/rekor-cli@latest
+```
+
+Upload to Rekor ([example entry](https://search.sigstore.dev/?uuid=24296fb24b8ad77a0938e917726893ce9bff2da2f55275f5fd80ffa8b5603aa102cb9ea6d0208824))
+```sh
+rekor-cli upload --artifact binary-linux-amd64.intoto.jsonl --signature binary-linux-amd64.intoto.jsonl.sig --pki-format=ssh --public-key=id_ed25519.pub
+```
+
+Verify inclusion in log (using the example public key)
+```sh
+echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBuSE7w1N3OUUpl6N6kpRO+WKkpJb0x1VRCIS3u8NMTj > id_ed25519.pub
+rekor-cli verify --signature binary-linux-amd64.intoto.jsonl.sig --artifact binary-linux-amd64.intoto.jsonl --public-key id_ed25519.pub --pki-format ssh
+```
+
+Verify signature
+```sh
+cat binary-linux-amd64.intoto.jsonl | ssh-keygen -Y check-novalidate -n file -f id_ed25519.pub  -s binary-linux-amd64.intoto.jsonl.sig
+```
